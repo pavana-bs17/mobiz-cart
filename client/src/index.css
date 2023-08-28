@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-scrollbar {
+    scrollbar-width: thin; /* Show a thin scrollbar */
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent; /* Set scrollbar track and thumb colors */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px; /* Set the width of the scrollbar */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background-color: transparent; /* Set track background color */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(150, 149, 149, 0.3); /* Set thumb color */
+    border-radius: 4px; /* Round the corners of the thumb */
+  }
+  
