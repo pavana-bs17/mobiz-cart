@@ -166,7 +166,6 @@ const Cart = () => {
 
   // Function to check item quantities and display toast for out-of-stock items
   const Checkout = (cart) => {
-    // Filter out cart items with quantity > 0
     const itemIds = cart.map((item) => item.product._id);
 
     axios
@@ -198,7 +197,6 @@ const Cart = () => {
         console.error("Error fetching item quantities:", error);
       });
   };
-
   return (
     <div className="w-full md:min-h-full flex justify-center">
       {isLoading ? (
@@ -217,9 +215,7 @@ const Cart = () => {
                     <th className="border border-slate-700 p-3">Total</th>
                     <th className="border border-slate-700 p-3">Action</th>
                   </tr>
-                  {cart
-                    ?.filter((item) => item.quantity > 0) // Filter out items with quantity 0
-                    .map((item) => {
+                  {cart.map((item) => {
                       const product = item?.product;
                       return (
                         <tr key={item._id} className="hover:bg-slate-100">
@@ -227,7 +223,7 @@ const Cart = () => {
                             {product?.name}
                           </td>
                           <td className="border border-slate-300 text-center">
-                            ${product?.price?.toFixed(2)}
+                            Rs. {product?.price?.toFixed(2)}
                           </td>
                           <td className="border border-slate-300 text-center">
                             <img
@@ -268,7 +264,7 @@ const Cart = () => {
                             </button>
                           </td>
                           <td className="border border-slate-300 text-center">
-                            ${(product.price * item.quantity).toFixed(2)}
+                            Rs. {(product.price * item.quantity).toFixed(2)}
                           </td>
                           <td className="border border-slate-300 text-center">
                             <button
@@ -281,7 +277,7 @@ const Cart = () => {
                         </tr>
                       );
                     })}
-                  {cart.length == 0 && ( 
+                  {cart?.length == 0 && ( 
                     <tr>
                       <td
                         colSpan="6"
@@ -308,7 +304,7 @@ const Cart = () => {
                 {cart.reduce((sum, items) => (sum += items.quantity), 0)}
               </h4>
               <h4 className="text-bold text-bold border border-b-slate-200 border-l-0 border-t-0 border-r-0 py-2">
-                Total Price: ${" "}
+                Total Price: Rs.{" "}
                 {cart
                   .reduce(
                     (sum, items) =>
@@ -376,7 +372,7 @@ const Cart = () => {
                                     {item.quantity}
                                   </p>
                                   <p>
-                                    <span className="font-bold">Price:</span> $
+                                    <span className="font-bold">Price:</span> Rs.
                                     {(product.price * item.quantity).toFixed(2)}
                                   </p>
                                 </div>
@@ -392,7 +388,7 @@ const Cart = () => {
                               )}
                             </p>
                             <p className="text-center mb-4 text-xl">
-                              <span className="font-bold">Total Price:</span> $
+                              <span className="font-bold">Total Price:</span> Rs.
                               {cart
                                 .reduce(
                                   (sum, items) =>

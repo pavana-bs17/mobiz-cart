@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 // import img1 from "../assests/img1.jpeg";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 import Cookie from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,6 +16,7 @@ import {
 const Home = () => {
   const [showProduct, setShowProduct] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = Cookie.get("jwt_token");
@@ -57,6 +57,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     axios({
       url: "http://localhost:8000/api/items/all_items",
       method: "get",
@@ -64,6 +65,7 @@ const Home = () => {
       .then((res) => {
         dispatch(setProducts(res.data));
         setShowProduct(res.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log("Error while fetching products", error);
@@ -167,116 +169,115 @@ const Home = () => {
 
   return (
     <div className="w-full">
-      <div className="w-full h-2/3 flex justify-center mt-5 md:mt-10 mb-4 overflow-y-scroll">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 w-[80%]">
-          {showProduct?.map((product) => {
-            return (
-              <div
-                className="shadow-md bg-white rounded p-4 border"
-                key={product._id}
-              >
-                <div className="flex justify-center items-center h-[250px]">
-                  <img
-                    src={product.image}
-                    className="max-h-full max-w-full"
-                    alt={product.name}
-                  />
-                </div>
-
-                <div className="w-[95%] flex flex-col justify-between my-3">
-                  <div className="mx-2">
-                    <h3>Name: {product.name}</h3>
-                    <h4>Price: Rs{product.price}</h4>
-                    {isadmin && <h4>Qty: {product.quantity}</h4>}
+      { !isLoading ?( 
+      <><div className="w-full h-2/3 flex justify-center mt-5 md:mt-10 mb-4 overflow-y-scroll">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 w-[80%]">
+            {showProduct?.map((product) => {
+              return (
+                <div
+                  className="shadow-md bg-white rounded p-4 border"
+                  key={product._id}
+                >
+                  <div className="flex justify-center items-center h-[250px]">
+                    <img
+                      src={product.image}
+                      className="max-h-full max-w-full"
+                      alt={product.name} />
                   </div>
-                  <div className="flex justify-between items-center md:mt-2 md:px-1 space-y-1">
-                    <div>
-                      <Link to={`productdetails/${product._id}`}>
-                        <button className="py-2 px-1 hover:text-blue-400 rounded bg-transparent text-orange-400">
-                          View Details
-                        </button>
-                      </Link>
+
+                  <div className="w-[95%] flex flex-col justify-between my-3">
+                    <div className="mx-2">
+                      <h3>Name: {product.name}</h3>
+                      <h4>Price: Rs{product.price}</h4>
+                      {isadmin && <h4>Qty: {product.quantity}</h4>}
                     </div>
-                    <div className="flex space-x-2">
-                      {isadmin && (
-                        <>
-                          <button
-                            id={product._id}
-                            onClick={() => updateProductHandler(product._id)}
-                            className="py-2 px-3 bg-orange-400 text-white rounded hover:bg-orange-200 hover:text-black"
-                          >
-                            Update
-                          </button>
-                          <button
-                            id={product._id}
-                            onClick={() => deleteProductHandler(product._id)}
-                            className="py-2 px-3 bg-orange-400 text-white rounded hover:bg-orange-200 hover:text-black"
-                          >
-                            Delete
-                          </button>
-                        </>
-                      )}
-                      {!isadmin && LoginStatus && (
-                        <button
-                          id={product._id}
-                          onClick={() => addToCartHandler(product._id)}
-                          className="py-2 px-3 bg-orange-400 text-white rounded hover:bg-orange-200 hover:text-black"
-                        >
-                          Add To Cart
-                        </button>
-                      )}
-                      {!isadmin && !LoginStatus && (
-                        <Link to={`/login`}>
-                          <button className="bg-orange-400 rounded px-2 py-1 text-white">
-                            Add to Cart
+                    <div className="flex justify-between items-center md:mt-2 md:px-1 space-y-1">
+                      <div>
+                        <Link to={`productdetails/${product._id}`}>
+                          <button className="py-2 px-1 hover:text-blue-400 rounded bg-transparent text-orange-400">
+                            View Details
                           </button>
                         </Link>
-                      )}
+                      </div>
+                      <div className="flex space-x-2">
+                        {isadmin && (
+                          <>
+                            <button
+                              id={product._id}
+                              onClick={() => updateProductHandler(product._id)}
+                              className="py-2 px-3 bg-orange-400 text-white rounded hover:bg-orange-200 hover:text-black"
+                            >
+                              Update
+                            </button>
+                            <button
+                              id={product._id}
+                              onClick={() => deleteProductHandler(product._id)}
+                              className="py-2 px-3 bg-orange-400 text-white rounded hover:bg-orange-200 hover:text-black"
+                            >
+                              Delete
+                            </button>
+                          </>
+                        )}
+                        {!isadmin && LoginStatus && (
+                          <button
+                            id={product._id}
+                            onClick={() => addToCartHandler(product._id)}
+                            className="py-2 px-3 bg-orange-400 text-white rounded hover:bg-orange-200 hover:text-black"
+                          >
+                            Add To Cart
+                          </button>
+                        )}
+                        {!isadmin && !LoginStatus && (
+                          <Link to={`/login`}>
+                            <button className="bg-orange-400 rounded px-2 py-1 text-white">
+                              Add to Cart
+                            </button>
+                          </Link>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+        </div><div className="flex justify-center mt-4">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`py-2 px-3 ${currentPage === 1
+                  ? "bg-gray-300 text-gray-600 cursor-not-allowed rounded mr-2 text-sm"
+                  : "bg-blue-300 text-blue-600 rounded mr-2 text-sm hover:bg-blue-400"}`}
+            >
+              Prev
+            </button>
+            {getPageNumbers().map((pageNumber) => (
+              <button
+                key={pageNumber}
+                onClick={() => handlePageChange(pageNumber)}
+                className={`py-2 px-3 ${currentPage === pageNumber
+                    ? "bg-orange-400 text-white rounded mr-2 text-sm"
+                    : "bg-gray-300 text-gray-600 rounded mr-2 text-sm hover:bg-gray-400"}`}
+              >
+                {pageNumber}
+              </button>
+            ))}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`py-2 px-3 ${currentPage === totalPages
+                  ? "bg-gray-300 text-gray-600 cursor-not-allowed rounded text-sm"
+                  : "bg-blue-300 text-blue-600 rounded text-sm hover:bg-blue-400"}`}
+            >
+              Next
+            </button>
+          </div></>
+      ):(
+        <div className="flex justify-center items-center h-96">
+
+        <p>Loading...</p>
         </div>
-      </div>
-      <div className="flex justify-center mt-4">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`py-2 px-3 ${
-            currentPage === 1
-              ? "bg-gray-300 text-gray-600 cursor-not-allowed rounded mr-2 text-sm"
-              : "bg-blue-300 text-blue-600 rounded mr-2 text-sm hover:bg-blue-400"
-          }`}
-        >
-          Prev
-        </button>
-        {getPageNumbers().map((pageNumber) => (
-          <button
-            key={pageNumber}
-            onClick={() => handlePageChange(pageNumber)}
-            className={`py-2 px-3 ${
-              currentPage === pageNumber
-                ? "bg-orange-400 text-white rounded mr-2 text-sm"
-                : "bg-gray-300 text-gray-600 rounded mr-2 text-sm hover:bg-gray-400"
-            }`}
-          >
-            {pageNumber}
-          </button>
-        ))}
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className={`py-2 px-3 ${
-            currentPage === totalPages
-              ? "bg-gray-300 text-gray-600 cursor-not-allowed rounded text-sm"
-              : "bg-blue-300 text-blue-600 rounded text-sm hover:bg-blue-400"
-          }`}
-        >
-          Next
-        </button>
-      </div>
+      )}
       <ToastContainer />
     </div>
   );

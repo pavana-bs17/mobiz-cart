@@ -48,7 +48,7 @@ function App() {
 
   useEffect(() => {
     handleVerification();
-  }, [navigate, userid]);
+  }, [navigate]);
 
 
   return (

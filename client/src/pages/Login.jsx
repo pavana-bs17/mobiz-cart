@@ -11,7 +11,6 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
-
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setInputs((prev) => {
@@ -22,12 +21,13 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    axios
-      .post(
-        "http://localhost:8000/api/user/login",
-        { ...inputs },
-        { withCredentials: true }
-      )
+    axios.post(
+      "http://localhost:8000/api/user/login",
+      { ...inputs },
+      {
+        withCredentials: true,
+      }
+    )
       .then((res) => {
         console.log(res);
 
@@ -47,7 +47,9 @@ const Login = () => {
           toast.success(res.data.message, {
             position: "top-right"
           });
-          navigate("/");
+         setTimeout(() => {
+            navigate("/");
+          }, 1000);
         }
       })
       .catch((err) => {

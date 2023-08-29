@@ -41,7 +41,7 @@ router.post(
     check("username", "Enter username").not().isEmpty(),
     check("password", "Enter password").not().isEmpty(),
   ],
-  async (req, res, next) => {
+  async (req, res) => {
     const { username, password } = req.body;
 
     const error = validationResult(req);

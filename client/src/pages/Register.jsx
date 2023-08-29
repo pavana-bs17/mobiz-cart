@@ -55,8 +55,8 @@ const Register = () => {
           });
 
           setTimeout(() => {
-            navigate("/");
-          }, 5000);
+            navigate("/login");
+          }, 2000);
         }
       })
       .catch((err) => {
