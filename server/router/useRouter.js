@@ -93,7 +93,7 @@ router.post(
       .isEmpty()
       .isLength({ min: 5 }),
   ],
-  async (req, res, next) => {
+  async (req, res) => {
     const {
       firstname,
       surname,
@@ -159,16 +159,12 @@ router.post(
     user.save().then((doc) => {
       const id = doc._id;
 
-      const token = jwt.sign({ id }, process.env.jwt_key, { expiresIn: "7d" });
-
       res
-        .cookie("jwt_token", token)
         .status(201)
         .send({
           id,
           created: true,
-          token,
-          message: "Registered successfully.",
+          message: "Registered successfully. You can now log in.",
         });
     });
   }
