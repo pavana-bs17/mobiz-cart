@@ -1,5 +1,6 @@
 const initialState = {
-    cart: []
+    cart: [],
+    total: 0,
   };
   
   const cartReducer = (state = initialState, action) => {
@@ -10,18 +11,6 @@ const initialState = {
               ...state,
               total : action.payload ,
             }
-    
-        case "SET_PRODUCTS":
-          return {
-            ...state,
-            products: action.payload,
-          };
-    
-        case "ADD_PRODUCT":
-          return {
-            ...state,
-            products: [...state.products, action.payload.product],
-          };
     
         case "UPDATE_CART_ITEMS":
           return {

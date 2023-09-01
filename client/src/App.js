@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Cart from "./pages/Cart";
 import Cookie from "js-cookie";
+import Profile from "./pages/Profile";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import axios from "axios";
@@ -56,7 +57,8 @@ function App() {
         <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/cart" element={<Cart userid={userid} />} />
+        <Route path="cart" element={<Cart/>} />
+        <Route path="profile" element={<Profile/>} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="addnewproduct" element={<AddNewProduct />} />
