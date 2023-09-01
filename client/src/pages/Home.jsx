@@ -12,12 +12,10 @@ import {
   updateCartItems,
   setUserId,
 } from "../redux/actions/index";
-import ProfileModal from "../modals/ProfileModal";
 
 const Home = () => {
   const [showProduct, setShowProduct] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -280,7 +278,6 @@ const Home = () => {
         <p>Loading...</p>
         </div>
       )}
-       {showModal && <ProfileModal />}
       <ToastContainer />
     </div>
   );
